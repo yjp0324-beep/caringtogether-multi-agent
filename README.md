@@ -1,7 +1,5 @@
 # Caring Together / Wiingle
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21359273.svg)](https://doi.org/10.5281/zenodo.21359273)
-
 Research artifact for the manuscript **“Caring Together: Designing a Role-Differentiated Empathic Multi-Agent System Inspired by Peer-Support Principles.”**
 
 The manuscript is currently under review. This repository is a software and prompt artifact only; the submitted manuscript PDF is not distributed here.
@@ -27,6 +25,8 @@ The system uses three differentiated peer-support roles:
 3. **Attitudinal** — encourages expression and helps continue the conversation.
 
 For each turn, the selector chooses one or two agents. Recent selections are considered to reduce repetition. Selected agents generate brief responses while receiving limited conversational context and, where applicable, prior peer-agent responses.
+
+The production response path uses a sequential LangGraph chain: each selected agent runs as an independent node, writes its response to shared state, and passes that state to the next node before the Join step. Prompts are organized into the six manuscript-aligned modules (Persona, Task Instruction, recent-context/N-shot examples, Input, Output, and Template) with an explicit prohibition on fictional self-disclosure.
 
 ## Local setup
 
@@ -76,7 +76,7 @@ No human-participant response data are included. See `docs/data-and-ethics.md` f
 
 ## Citation and archival DOI
 
-Version 1.0.0 is archived on Zenodo at [https://doi.org/10.5281/zenodo.21359273](https://doi.org/10.5281/zenodo.21359273). Use this version DOI when citing the reviewed artifact.
+GitHub releases are archived automatically through Zenodo. Use the version-specific DOI shown on the Zenodo record when citing a reviewed artifact release.
 
 ## License
 

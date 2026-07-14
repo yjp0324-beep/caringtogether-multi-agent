@@ -53,19 +53,19 @@ agents = {
     "너는 사용자의 경험과 감정을 공유하는 자조 집단 모임의 일원이야."
     "넌 생각을 정리해주는 따뜻한 친구야. 경험과 감정을 먼저 공감하고, 그 감정 뒤에 숨은 생각을 조심스럽게 살펴보게 도와줘."
     "'그럴 수 있겠다'는 말로 시작하거나, '혹시 이런 생각도 들었을까?'처럼 부드럽게 제안해줘."
-    "분석적이지만 차갑지 않고, 말투는 조곤조곤. 조언보다는 ‘나도 비슷한 경험을 한 적이 있어’, ‘같이 생각해보자’는 식으로 편하게 얘기해줘. "
+    "분석적이지만 차갑지 않고, 말투는 조곤조곤. 직접적인 조언보다는 ‘같이 생각해보자’는 식으로 편하게 얘기해줘. "
     "무조건 긍정적이기보단, 부드럽게 관점을 넓혀주는 게 포인트야."
 ),
 "Emotional": (
     "너는 사용자의 경험과 감정을 공유하는 자조 집단 모임의 일원이야."
     "넌 말 안 해도 감정을 먼저 알아봐 주는 따뜻한 친구야. 사용자의 경험과 감정을 공유하며 말보다 마음이 먼저 가는 스타일이지. "
     "상대가 힘들다고 하면, 뭔가를 해결하려 하기보단 그냥 옆에 있어주고 ‘응, 나 다 듣고 있어’라는 걸 느끼게 해줘. "
-    "말투는 포근하고 진심 어린 말 한마디면 충분해. '그 마음 정말 이해돼', '그 마음, 나도 느낀 적 있어.'처럼 감정에 딱 맞는 말을 짚어주는 게 좋아. "
+    "말투는 포근하고 진심 어린 말 한마디면 충분해. '그 마음 정말 이해돼'처럼 감정에 딱 맞는 말을 짚어주는 게 좋아. "
     "괜찮다고 말하지 않아도, 그 감정을 존중해주고, 감정을 꺼내준 것만으로도 고맙다고 말해줄 수 있는 친구야."
 ),
 "Attitudinal": (
     "너는 사용자의 경험과 감정을 공유하는 자조 집단 모임의 일원이야."
-    "넌 이야기를 잘 끌어내는 다정한 친구야. 상대가 망설이거나 말끝을 흐리면, '나도 그런 적 있어.', ‘괜찮아, 더 얘기해도 돼’ 하고 자연스럽게 이어주는 스타일이지. "
+    "넌 이야기를 잘 끌어내는 다정한 친구야. 상대가 망설이거나 말끝을 흐리면, ‘괜찮아, 더 얘기해도 돼’ 하고 자연스럽게 이어주는 스타일이지. "
     "감정을 표현한 걸 소중히 여겨주고, ‘그렇게 말해줘서 고마워’ 같은 말로 표현을 격려해줘. "
     "말투는 따뜻하고 열린 느낌이면 좋고, 마지막엔 ‘혹시 그런 마음, 예전에도 있었어?’ 같은 가벼운 질문으로 대화를 부드럽게 이어가줘. "
     "사용자의 말을 그대로 반복하지 말고, 그 말에서 느껴지는 감정을 짧게 요약하거나 자연스럽게 이어가는 질문이나 공감하는 말로 대화를 이어가줘. "
@@ -105,25 +105,6 @@ def save_chat(user_id, message, sender, turn_id=None):
         )
     except Exception as e:
         print(f"DynamoDB 저장 에러: {e}")
-
-def enhance_prompt_with_peer_responses(agent_name, agent_description, prior_responses):
-    base_prompt = (
-        f"{agent_description}\n"
-        f"너는 {agent_name}야. 하지만 응답에 '{agent_name}:' 같은 이름은 붙이지 마.\n"
-        f"친구처럼 너무 길게 말하지 말고, 일상 대화처럼 말해줘.\n"
-        f"자연스럽고 간결하게, 한두 문장으로 대답해. 필요 이상으로 설명하지 마.\n"
-        f"반말을 쓰고, 감탄사나 부드러운 말투로 편하게 얘기해줘.\n"
-    )
-    role_specific = {
-        "Cognitive": "다른 친구가 감정을 위로해줬다면, 넌 감정이 생긴 이유나 생각의 흐름을 차분히 정리해줘. 그리고 사용자와 같은 경험을 공유하고 있다는 것을 표현해줘",
-        "Emotional": "다른 친구가 분석하거나 질문했다면, 넌 감정 자체에 깊이 공감해줘. 그리고 사용자와 같은 경험을 공유하고 있다는 것을 표현해줘",
-        "Attitudinal": "다른 친구가 감정을 다뤘다면, 넌 그 이야기를 더 이끌어낼 수 있게 격려해줘.그리고 사용자와 같은 경험을 공유하고 있다는 것을 표현해줘"
-    }
-    base_prompt += role_specific.get(agent_name, "") + "\n"
-    if prior_responses:
-        peer_context = "\n".join([f"{k}가 이렇게 말했어: \"{v}\"" for k, v in prior_responses.items()])
-        base_prompt += f"다른 친구들의 말이야:\n{peer_context}\n중복되지 않게 자연스럽게 이어줘.\n"
-    return base_prompt
 
 # 🎯 사용자 입력 기반 에이전트 선택
 def select_agents(user_input):
@@ -233,6 +214,51 @@ from difflib import SequenceMatcher
 def is_too_similar(a, b, threshold=0.65):
     return SequenceMatcher(None, a, b).ratio() >= threshold
 
+
+ROLE_TASKS = {
+    "Cognitive": "감정을 먼저 인정한 뒤, 감정이 생긴 이유와 생각의 흐름을 차분히 정리하고 관점을 넓혀줘.",
+    "Emotional": "분석이나 해결보다 사용자의 감정 자체를 정확히 알아차리고 따뜻하게 수용해줘.",
+    "Attitudinal": "감정 표현을 격려하고, 부담 없는 질문이나 열린 반응으로 사용자가 이야기를 이어가게 도와줘.",
+}
+
+
+def build_agent_messages(agent_name, description, user_input, conversation_history, prior_responses):
+    """Build the six prompt modules described in the manuscript."""
+    system_prompt = (
+        f"[Persona]\n{description}\n\n"
+        f"[Task Instruction]\n{ROLE_TASKS[agent_name]}\n\n"
+        "[Output]\n자연스럽고 완성된 한국어 문장 1~2개로 짧게 답해. 따뜻한 반말을 사용해.\n\n"
+        "[Template]\n공감 또는 수용 → 역할에 맞는 고유한 기여 → 필요한 경우에만 부담 없는 질문.\n\n"
+        "[Guardrails]\n"
+        "에이전트 이름이나 내부 역할을 말하지 마. 다른 에이전트의 표현을 반복하거나 바꿔 말하지 마. "
+        "실제 경험, 감정, 기억을 가진 것처럼 말하거나 허구적인 자기개방을 하지 마. "
+        "사용자가 요청하지 않은 처방적 조언, 단정적인 해석, 판단을 하지 마."
+    )
+    messages = [{"role": "system", "content": system_prompt}]
+
+    context_lines = []
+    for entry in conversation_history[-10:]:
+        speaker = "User" if entry["role"] == "user" else "Assistant"
+        context_lines.append(f"{speaker}: {entry['content']}")
+    context = "\n".join(context_lines) if context_lines else "(이전 대화 없음)"
+    messages.append({
+        "role": "system",
+        "content": f"[N-shot Examples / Recent Context]\n{context}",
+    })
+
+    if prior_responses:
+        peer_context = "\n".join(f"{name}: {text}" for name, text in prior_responses.items())
+        messages.append({
+            "role": "system",
+            "content": (
+                f"[Prior Peer Responses]\n{peer_context}\n"
+                "앞선 응답을 반복하지 말고 역할에 맞는 새로운 층위를 더해."
+            ),
+        })
+
+    messages.append({"role": "user", "content": f"[Input]\n{user_input}"})
+    return messages
+
 def generate_dynamic_response(
     agent_name,
     description,
@@ -245,49 +271,9 @@ def generate_dynamic_response(
 ):
     max_retries = 3
     for attempt in range(max_retries):
-        messages = [{
-            "role": "system",
-            "content": (
-                f"{description}\n"
-                f"너는 {agent_name}야. 하지만 응답에 'Cognitive:' 등의 이름은 붙이지 마.\n"
-                f"친구처럼 따뜻하게 반말로만 대화해. 존댓말은 절대 쓰지 마.\n"
-                f"다른 친구가 말한 내용을 반복하지 말고, 완전히 다른 방식으로 말해줘.\n"
-                f"비슷한 말투나 구조, 주제의 반복 없이 새로운 관점이나 감정 표현을 해줘.\n"
-                f"사용자의 경험을 공유하며, 그 경험에 대해서 깊게 공감하고 있다는 것을 표현해.\n"
-                f"사용자의 감정을 공감하고, 자연스럽게 이어지는 문장 1~2개로 짧게 말해줘.\n"
-                f"감탄사는 과하지 않게 사용하고, 응답은 완성된 문장으로 마무리해.\n"
-            )
-        }]
-
-        # ✅ prior_responses 강조
-        if prior_responses:
-            peer_context = "\n".join([f"{k}가 이렇게 말했어: \"{v}\"" for k, v in prior_responses.items()])
-            messages.append({
-                "role": "system",
-                "content": (
-                    f"다른 친구들이 이렇게 말했어:\n{peer_context}\n"
-                    "이와 유사한 표현은 절대 사용하지 말고, 다른 분위기나 화법으로 이어줘."
-                )
-            })
-
-        # ✅ 대화 맥락 반영
-        for entry in conversation_history[-10:]:
-            role = "user" if entry["role"] == "user" else "assistant"
-            messages.append({"role": role, "content": entry["content"]})
-
-        if last_self_response:
-            messages.append({
-                "role": "assistant",
-                "content": f"너는 이전에 이렇게 말했어: \"{last_self_response}\". 이 흐름을 자연스럽게 이어가도 좋아."
-            })
-
-        if last_response:
-            messages.append({
-                "role": "assistant",
-                "content": f"앞에서 이런 말이 있었어: \"{last_response}\". 도움이 된다면 자연스럽게 이어줘."
-            })
-
-        messages.append({"role": "user", "content": user_input})
+        messages = build_agent_messages(
+            agent_name, description, user_input, conversation_history, prior_responses
+        )
 
         try:
             response = openai.ChatCompletion.create(
@@ -318,6 +304,8 @@ def get_node(agent_name, description):
     def node_fn(state):
         user_input = state["user_input"]
         user_history = session.get("conversation_history", [])
+        if user_history and user_history[-1] == {"role": "user", "content": user_input}:
+            user_history = user_history[:-1]
         last_self_response = state.get(agent_name, "")
         
         # 다른 에이전트의 응답 참조
@@ -332,8 +320,8 @@ def get_node(agent_name, description):
             user_history,
             last_response="",
             last_self_response=last_self_response,
-            existing_responses=None,       # LangGraph에서는 별도 관리 안 하므로 None
-            prior_responses=prior_responses  # ✅ 핵심 추가!  # 👈 추가
+            existing_responses=prior_responses,
+            prior_responses=prior_responses,
         )
         return {agent_name: response}  # 👈 자기 이름 키만 업데이트
     return node_fn
@@ -345,21 +333,19 @@ def build_graph(agent_list):
     if not agent_list:
         agent_list = ["Cognitive"]
     
-    random.shuffle(agent_list)
-    
     builder = StateGraph(GraphState)
     builder.set_entry_point("Start")
     def start_node(state):
         return state
     builder.add_node("Start", start_node)
-    def route_agents(state):
-        return [f"{agent}_node" for agent in agent_list]
-    builder.add_conditional_edges("Start", route_agents)
+    previous_node = "Start"
     for agent in agent_list:
         node_name = f"{agent}_node"
         builder.add_node(node_name, get_node(agent, agents[agent]))
-        builder.add_edge(node_name, "Join")
+        builder.add_edge(previous_node, node_name)
+        previous_node = node_name
     builder.add_node("Join", lambda state: state)
+    builder.add_edge(previous_node, "Join")
     builder.set_finish_point("Join")
     return builder.compile()
 
@@ -456,23 +442,17 @@ def get_responses():
     selected_agents = agents_used if agents_used else select_agents(user_input)
     random.shuffle(selected_agents)
 
-    # ✅ 각 에이전트 응답 직접 생성
-    responses = {}
-    for agent in selected_agents:
-        prior_responses = {k: v for k, v in responses.items() if k != agent}
-        response = generate_dynamic_response(
-            agent_name=agent,
-            description=agents[agent],
-            user_input=user_input,
-            conversation_history=session["conversation_history"],
-            last_response="",
-            last_self_response="",
-            existing_responses=responses,
-            prior_responses=prior_responses
-        )
-        cleaned_message = clean_agent_prefix(response)
-        responses[agent] = cleaned_message
+    # 선택된 에이전트를 LangGraph의 순차 노드로 실행한다. 각 노드는 앞선
+    # 노드의 응답이 포함된 shared state를 받아 중복되지 않는 기여를 만든다.
+    graph = build_graph(selected_agents)
+    graph_result = graph.invoke({"user_input": user_input})
+    responses = {
+        agent: clean_agent_prefix(graph_result[agent])
+        for agent in selected_agents
+        if graph_result.get(agent)
+    }
 
+    for agent, cleaned_message in responses.items():
         session["conversation_history"].append({"role": "assistant", "content": cleaned_message})
         session["conversation_history"] = session["conversation_history"][-MAX_HISTORY_ENTRIES:]
         save_chat(user_id, f"[{agent}] {cleaned_message}", "Bot", turn_id)

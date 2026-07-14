@@ -12,5 +12,5 @@
   "access_right": "open",
   "license": "MIT",
   "keywords": ["empathic AI", "chatbot", "multi-agent system", "emotional support", "diary study"],
-  "notes": "The associated manuscript is currently under review. Participant data are not included because the authors do not have permission to share them."
+  "notes": "Version 1.1.0 aligns the runtime with the manuscript by using sequential LangGraph orchestration, shared-state peer-response context, an explicit six-module prompt structure, and a guardrail against fictional self-disclosure. The associated manuscript is currently under review. Participant data are not included because the authors do not have permission to share them."
 }

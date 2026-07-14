@@ -12,6 +12,8 @@ This document summarizes the implemented experimental conditions. The exact Kore
 
 Shared constraints include short one- or two-sentence responses, informal Korean speech, no visible internal role label, and reduced duplication across agents.
 
+The public implementation explicitly separates Persona, Task Instruction, recent-context examples, Input, Output, and Template modules. Its shared guardrail prohibits fictional self-disclosure, claims of personal experience, unsolicited prescriptive advice, and unsupported interpretations.
+
 ## Selection procedure
 
 1. The user's message is provided to a model-based selector.
@@ -25,13 +27,15 @@ The production endpoint independently validates that a client-supplied selection
 
 ## Response procedure
 
-Each selected role receives:
+Selected roles are executed as a sequential LangGraph chain. Each role receives:
 
 - its role-specific Korean prompt;
 - up to ten recent conversation entries;
 - the current user message;
 - available responses from previously executed peer agents; and
 - instructions to avoid repeating prior responses.
+
+Each node writes its response to the shared graph state before the next node runs. The final Join node returns the complete role-keyed response state.
 
 Responses are limited to 200 generated tokens and post-processed to remove internal role prefixes and retain at most two completed sentences.
 
