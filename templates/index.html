@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wiingle</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+
+/* 전체 배경 및 폰트 */
+body {
+  margin: 0;
+  padding: 0 10px;  /* 모바일 대응 */
+  box-sizing: border-box;
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(180deg, #e6f0fa, #f8fbff);
+  display: flex;
+  justify-content: center;
+  align-items: center;         /* ✅ 여기! 세로 중앙 유지 */
+  height: auto;               /* ✅ 뷰포트 기준 정렬 */
+  min-height: 100vh;         /* 💡 필요 시 사용 */
+}
+
+ /* ✅ 온보딩 */
+ #onboarding {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    #onboarding h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    #onboarding p {
+      font-size: 16px;
+      color: #555;
+      line-height: 1.5;
+      font-weight: bold; /* 또는 700 */
+    }
+
+    #onboarding p.slogan {
+      font-family: 'Georgia'; /* 원하는 폰트로 변경 */
+      font-size: 14px;
+      color: #919191;
+      text-align: center;
+      font-weight: normal;
+      letter-spacing: 0.5px;
+    }
+
+    #start-button {
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 20px;
+      background-color: #3f51b5;
+      color: white;
+      cursor: pointer;
+    }
+
+/* 채팅 컨테이너 (기존 700px 유지) */
+#chat-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 15px auto;
+  padding: 0;
+  border-radius: 30px;
+  overflow: hidden;
+  background-color: #fdfefe;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  flex: 1;  /* 남은 공간을 모두 채우도록 설정 */
+}
+
+#wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* 채팅 박스 */
+#chat-box {
+  flex-grow: 1;
+  padding: 30px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 입력 영역 */
+#chat-input {
+  display: flex;
+  padding: 18px 24px;
+  border-top: 1px solid #eee;
+  background-color: #f8f8f8;
+}
+
+/* 사용자 입력창 */
+#user-input {
+  flex-grow: 1;
+  padding: 14px 20px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 24px;
+  background-color: #ffffff;
+  color: #505050;
+  transition: border 0.2s ease;
+}
+
+#user-input:focus {
+  outline: none;
+  border-color: #8ab4f8;
+}
+
+/* 전송 버튼 */
+#send-button {
+  margin-left: 12px;
+  background: #3b3b3b;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 22px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#send-button:hover {
+  background-color: #4757F9;
+}
+
+#chat-wrapper {
+  width: 100%;
+  max-width: 700px;
+  height: 670px;              /* ✅ 항상 고정된 높이 */
+  margin-top: 20px;           /* ✅ 상단 여백 */
+  margin-bottom: 20px;        /* ✅ 하단 여백 */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0px;
+}
+
+/* 메시지 기본 설정 */
+.message {
+  display: flex;
+  flex-direction: row; /* 명시적으로 추가 권장 ✅ */
+  align-items: flex-end;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* 사용자 메시지 */
+.user-message {
+  justify-content: flex-end;
+}
+
+.message-content {
+  display: block;
+    max-width: 400px;
+    /* width: fit-content;  제거 또는 주석 처리 */
+    width: auto; /* 필요 시 추가 */
+    white-space: normal;
+    word-wrap: break-word;
+    padding: 14px 18px;
+    font-size: 15px;
+    border-radius: 18px;
+    flex-shrink: 1;
+}
+
+.user-message .message-content {
+  background-color: #2e4cff;
+  color: white;
+  border-radius: 18px 18px 0 18px;
+  box-shadow: 0 4px 10px rgba(46, 76, 255, 0.1);
+}
+
+.agent-message .message-content {
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 18px 18px 18px 0;
+  border: 1px solid #ececec;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+}
+
+/* Emo (정서형) */
+.emotional-agent .message-content {
+  background-color: #FFEEF0;
+  color: #333;
+  border-color: #f3cedc;
+}
+
+/* Atti (태도형) */
+.attitudinal-agent .message-content {
+  background-color: #fef5e0;
+  color: #333;
+  border-color: #feebba;
+}
+
+/* Cogi (인지형) */
+.cognitive-agent .message-content {
+  background-color: #e6f0ff;
+  color: #333;
+  border-color: #cddfff;
+}
+
+/* 에이전트 프로필 (이미지 전용) */
+.agent-message .profile-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 80%;
+  overflow: hidden;
+  flex-shrink: 0;
+  /* ❌ border 제거 */
+  border: none;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent; /* 배경도 제거 */
+}
+
+.agent-message .profile-icon img {
+  width: 80%;
+  height: 80%;
+  object-fit: contain; /* ✅ 잘리지 않게 */
+}
+
+/* 로딩 애니메이션 */
+.loading-dots {
+  font-size: 16px;
+  display: inline-flex;
+}
+.dot {
+  animation: blink 1.2s infinite;
+  margin: 0 2px;
+}
+.dot:nth-child(1) { animation-delay: 0s; }
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes blink {
+  0%, 80%, 100% { opacity: 1; }
+  40% { opacity: 0; }
+}
+.agent-name {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+  margin-left: 2px;
+}
+
+#agent-header {
+  padding: 8px 16px 0 16px;
+  margin-bottom: 0px;
+  display: flex;
+  align-items: center;
+}
+
+#agent-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 5px; /* ✅ 채팅창 왼쪽 패딩과 딱 맞게! */
+  flex-wrap: nowrap; /* ✅ 반응형에서 줄바꿈 방지 */
+}
+
+/* 문구 */
+.agent-text {
+  font-size: 13px;
+  color: #666;
+  animation: fadeInUp 0.8s ease;
+  white-space: normal;
+}
+
+#agent-profiles {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.profile-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-left: -10px;
+  z-index: 1;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.05);
+}
+
+.profile-img:first-child {
+  margin-left: 0;
+  z-index: 3;
+}
+.profile-img:nth-child(2) {
+  z-index: 2;
+}
+.profile-img:nth-child(3) {
+  z-index: 1;
+}
+
+.profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.blinking-dot {
+  display: inline-block;
+  margin-left: -5px;
+  width: 5px;
+  height: 5px;
+  background-color: #62da66; /* 초록색 */
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@media (max-width: 768px) {
+  #chat-container {
+    width: 100%;
+    margin: 0px auto;
+    margin-top: 15px;  /* ✅ 헤더 아래 고정 간격 확보 */
+  }
+
+  #chat-box {
+    padding: 16px;
+  }
+
+  #user-input {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+
+  #send-button {
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+
+  .agent-message .message-content,
+  .user-message .message-content {
+    font-size: 14px;
+    max-width: 80%;
+    min-width: 0;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.floating-logo {
+  animation: floatUpDown 3s ease-in-out infinite;
+  margin-left: -10px; /* 왼쪽으로 당김 */
+}
+
+.agent-bubble {
+  display: flex;
+  flex-direction: column;
+  max-width: 80%;        /* ✅ 말풍선 최대 너비 제어 */
+  min-width: 0;   
+}
+
+/* 애니메이션 정의 */
+@keyframes floatUpDown {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+  100% { transform: translateY(0); }
+}
+
+</style>
+</head>
+<body>
+  <div id="wrapper">
+    <!-- 온보딩만 먼저 보이도록 설정 -->
+    <div id="wrapper">
+      <div id="onboarding">
+        <h1>
+	          <span class="floating-logo" style="font-family: Georgia, serif;">Wiingle</span>
+        </h1>
+        <p class="slogan"> 💕 In Wiingle, we mingle our stories to make meaning 💕</p>
+        <p> 오늘, 당신을 이해해줄 친구가 필요한가요?<br>Wiingle에서 이야기를 함께 나누어요!</p>
+        <button id="start-button">대화 시작하기</button>
+      </div>
+  
+      <!-- 챗봇 화면 -->
+      <div id="chat-wrapper" style="display: none;">
+        <!-- 에이전트 헤더 -->
+        <div id="agent-header">
+          <div id="agent-header-inner">
+            <div id="agent-profiles">
+              <div class="profile-img" title="Cogi (인지형)">
+	                <img src="/static/images/cognitive.svg" alt="Cogi">
+              </div>
+              <div class="profile-img" title="Emo (정서형)">
+	                <img src="/static/images/emotional.svg" alt="Emo">
+              </div>
+              <div class="profile-img" title="Atti (태도형)">
+	                <img src="/static/images/attitudinal.svg" alt="Atti">
+              </div>
+            </div>
+            <div class="agent-text">3명이 당신의 이야기를 함께 듣고 있어요</div>
+            <span class="blinking-dot"></span>
+          </div>
+        </div>
+  
+        <!-- 채팅창 -->
+        <div id="chat-container">
+          <div id="chat-box"></div>
+          <div id="chat-input">
+            <input type="text" id="user-input" placeholder="메시지를 입력해주세요">
+            <button id="send-button">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <script>
+      if (!localStorage.getItem("user_id")) {
+        const uuid = crypto.randomUUID();
+        localStorage.setItem("user_id", uuid);
+      }
+      const user_id = localStorage.getItem("user_id");
+
+      function escapeHtml(value) {
+        return $("<div>").text(String(value)).html();
+      }
+
+      const agentMeta = {
+    "Cognitive": {
+      agentClass: "cognitive-agent",
+	      profileImage: "/static/images/cognitive.svg",
+      displayName: "Cogi"
+    },
+    "Emotional": {
+      agentClass: "emotional-agent",
+	      profileImage: "/static/images/emotional.svg",
+      displayName: "Emo"
+    },
+    "Attitudinal": {
+      agentClass: "attitudinal-agent",
+	      profileImage: "/static/images/attitudinal.svg",
+      displayName: "Atti"
+    }
+  };
+  
+      $(document).ready(function () {
+        $("#start-button").on("click", function () {
+          $("#onboarding").hide();
+          $("#chat-wrapper").fadeIn();
+        });
+  
+        function sendMessage() {
+          const userInput = $("#user-input").val().trim();
+          if (!userInput) return;
+  
+          $("#chat-box").append(`
+            <div class="message user-message">
+              <div class="message-content">${escapeHtml(userInput)}</div>
+            </div>
+          `);
+          $("#user-input").val("");
+          $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+  
+          // 1. 먼저 에이전트 선택 API 호출
+          $.ajax({
+            type: "POST",
+            url: "./select_agents",
+            contentType: "application/json",
+            data: JSON.stringify({ user_input: userInput }),
+            success: function (selectData) {
+              const agentsUsed = selectData.agents_used || [];
+  
+              // 2. 선택된 에이전트에 대한 로딩 메시지 출력
+agentsUsed.forEach(agent => {
+  const meta = agentMeta[agent];
+  const loadingId = `loading-${agent.toLowerCase()}`;
+  $("#chat-box").append(`
+    <div id="${loadingId}" class="message agent-message ${meta.agentClass}">
+      <div class="profile-icon">
+    <img src="${meta.profileImage}" alt="${agent}">
+    </div>
+    <div class="agent-bubble">
+      <div class="agent-name">${meta.displayName}</div>
+      <div class="message-content loading-dots">
+        <span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
+        </div>
+      </div>
+    </div>
+  `);
+});
+              $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+  
+              // 3. 응답 요청
+              $.ajax({
+                type: "POST",
+                url: "./get_responses",
+                contentType: "application/json",
+                data: JSON.stringify({
+                  user_input: userInput,
+                  user_id: user_id,
+                  agents_used: agentsUsed
+                }),
+                success: function (data) {
+                  const responses = data.responses;
+                  for (let agent in responses) {
+                    const meta = agentMeta[agent];
+                    const loadingId = `#loading-${agent.toLowerCase()}`;  // ✅ 이 줄 추가!
+                    $(loadingId).replaceWith(`
+                    <div class="message agent-message ${meta.agentClass}">
+                      <div class="profile-icon">
+                        <img src="${meta.profileImage}" alt="${agent}">
+                      </div>
+                      <div class="agent-bubble">
+                        <div class="agent-name">${meta.displayName}</div>
+                        <div class="message-content">${escapeHtml(responses[agent])}</div>
+                      </div>
+                    </div>
+                  `);
+                  }
+                  $("#chat-box").scrollTop($("#chat-box")[0].scrollHeight);
+                },
+                error: function () {
+                  agentsUsed.forEach(agent => $(`#loading-${agent.toLowerCase()}`).remove());
+                  $("#chat-box").append(
+                    $("<div>").addClass("message agent-message").append(
+                      $("<div>").addClass("message-content").text("응답을 불러오지 못했어요. 잠시 후 다시 시도해주세요.")
+                    )
+                  );
+                }
+              });
+            },
+            error: function () {
+              $("#chat-box").append(
+                $("<div>").addClass("message agent-message").append(
+                  $("<div>").addClass("message-content").text("친구를 불러오지 못했어요. 잠시 후 다시 시도해주세요.")
+                )
+              );
+            }
+          });
+        }
+  
+        $("#send-button").on("click", function (e) {
+          e.preventDefault();
+          sendMessage();
+        });
+  
+        $("#user-input").on("keypress", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            sendMessage();
+          }
+        });
+      });
+    </script>
+  </body>
+  </html>

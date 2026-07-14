@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Multi-Agent Empathy Service using Flask, Lambda, and API Gateway
+
+Parameters:
+  OpenAIApiKey:
+    Type: String
+    NoEcho: true
+    Description: OpenAI API key
+  FlaskSecretKey:
+    Type: String
+    NoEcho: true
+    Description: Random secret used to sign Flask sessions
+
+Globals:
+  Function:
+    Timeout: 30
+
+Resources:
+  MultiAgentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda_handler.lambda_handler
+      Runtime: python3.9
+      CodeUri: .
+      MemorySize: 1024
+      Environment:
+        Variables:
+          OPENAI_API_KEY: !Ref OpenAIApiKey
+          FLASK_SECRET_KEY: !Ref FlaskSecretKey
+          FLASK_ENV: production
+          CHAT_STORAGE_BACKEND: dynamodb
+          CHAT_TABLE_NAME: !Ref ChatHistoryTable
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ChatHistoryTable
+      Events:
+        ApiEventRoot:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+        ApiEventProxy:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+    # ✅ 올바른 위치
+    Metadata:
+      BuildMethod: python3.9
+      BuildProperties:
+        Files:
+          - app.py
+          - lambda_handler.py
+          - requirements.txt
+          - static/**
+          - templates/**
+
+  ChatHistoryTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: UserID
+          AttributeType: S
+        - AttributeName: MessageID
+          AttributeType: S
+      KeySchema:
+        - AttributeName: UserID
+          KeyType: HASH
+        - AttributeName: MessageID
+          KeyType: RANGE
