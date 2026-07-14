@@ -1,5 +1,7 @@
 # Caring Together / Wiingle
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21359273.svg)](https://doi.org/10.5281/zenodo.21359273)
+
 Research artifact for the manuscript **“Caring Together: Designing a Role-Differentiated Empathic Multi-Agent System Inspired by Peer-Support Principles.”**
 
 The manuscript is currently under review. This repository is a software and prompt artifact only; the submitted manuscript PDF is not distributed here.
@@ -74,7 +76,7 @@ No human-participant response data are included. See `docs/data-and-ethics.md` f
 
 ## Citation and archival DOI
 
-After entering the author metadata and selecting a license, create a GitHub release and archive it through Zenodo. The exact procedure is in `docs/github-zenodo-release.md`.
+Version 1.0.0 is archived on Zenodo at [https://doi.org/10.5281/zenodo.21359273](https://doi.org/10.5281/zenodo.21359273). Use this version DOI when citing the reviewed artifact.
 
 ## License
 
