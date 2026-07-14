@@ -1,6 +1,8 @@
-# CaringTogether / Wiingle
+# Caring Together / Wiingle
 
-Research artifact for **“CaringTogether: Designing a Role-Differentiated Empathic Multi-Agent System Inspired by Peer-Support Principles.”**
+Research artifact for the manuscript **“Caring Together: Designing a Role-Differentiated Empathic Multi-Agent System Inspired by Peer-Support Principles.”**
+
+The manuscript is currently under review. This repository is a software and prompt artifact only; the submitted manuscript PDF is not distributed here.
 
 This repository contains the source code, role prompts, agent-selection logic, deployment configuration, and validation tests for the role-differentiated empathic multi-agent prototype. It does **not** contain participant conversations, survey responses, interview material, application logs, or credentials.
 
@@ -76,4 +78,4 @@ After entering the author metadata and selecting a license, create a GitHub rele
 
 ## License
 
-A license has intentionally not been assigned in this draft. The authors must select and add the appropriate code and documentation licenses before public release. MIT or Apache-2.0 are common choices for code; Creative Commons licenses may be considered separately for documentation and research materials.
+The software and accompanying repository documentation are released under the MIT License. The license permits reuse but does not grant access to participant data, the submitted manuscript, trademarks, or third-party materials. Anyone who supplies model-provider credentials or deploys cloud infrastructure is solely responsible for charges incurred in their own accounts.

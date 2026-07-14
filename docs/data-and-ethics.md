@@ -21,9 +21,9 @@ The repository must not be interpreted as a public release of the human-particip
 
 ## Proposed Data Availability Statement
 
-> The source code, prompts, and system configuration used to implement the role-differentiated multi-agent system are publicly available at [REPOSITORY DOI]. Due to the sensitive nature of the conversational data and participant privacy considerations, the participant datasets are not publicly available. Subject to the scope of participant consent, institutional ethics requirements, and an appropriate data-sharing agreement, eligible data may be available from the corresponding author upon reasonable request.
+> The source code, prompts, and system configuration used to implement the role-differentiated multi-agent system are publicly available at [REPOSITORY DOI]. The authors do not have permission to share the participant data; therefore, conversational data, survey responses, interview materials, and other participant datasets are not publicly available and are not included in this repository.
 
-The authors should confirm this wording against the approved ethics protocol and participant consent form before using it in the manuscript. If those documents do not permit external sharing, remove the final sentence and state that the participant data cannot be shared.
+This wording follows the submitted manuscript's statement that the authors do not have permission to share data. Any later change must first be verified against the approved ethics protocol and participant consent form.
 
 ## Pre-publication privacy check
 

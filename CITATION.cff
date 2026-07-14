@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this research artifact, please cite the software record and the associated manuscript."
+title: "Caring Together: Role-Differentiated Empathic Multi-Agent System Research Artifact"
+type: software
+version: 1.0.0
+date-released: 2026-07-14
+license: MIT
+repository-code: "https://github.com/yjp0324-beep/caringtogether-multi-agent"
+authors:
+  - family-names: Park
+    given-names: Yejin
+    affiliation: "Graduate School of Information, Yonsei University"
+  - family-names: Han
+    given-names: Eunbin
+    affiliation: "Graduate School of Information, Yonsei University"
+  - family-names: Sha
+    given-names: Jiwon
+    affiliation: "Graduate School of Communication and Arts, Yonsei University"
+  - family-names: Oh
+    given-names: Changhoon
+    affiliation: "Graduate School of Information, Yonsei University"
+  - family-names: Jun
+    given-names: Soojin
+    affiliation: "Graduate School of Communication and Arts, Yonsei University"
+keywords:
+  - empathic AI
+  - chatbot
+  - multi-agent system
+  - emotional support
+  - diary study
+abstract: >-
+  Source code, role prompts, agent-selection logic, deployment configuration,
+  and validation tests for Wiingle, a role-differentiated empathic multi-agent
+  system inspired by peer-support principles. No participant data or submitted
+  manuscript files are included.

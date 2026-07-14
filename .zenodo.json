@@ -1,0 +1,16 @@
+{
+  "title": "Caring Together: Role-Differentiated Empathic Multi-Agent System Research Artifact",
+  "upload_type": "software",
+  "description": "Source code, role prompts, agent-selection logic, deployment configuration, and validation tests for Wiingle. This artifact accompanies the manuscript 'Caring Together: Designing a Role-Differentiated Empathic Multi-Agent System Inspired by Peer-Support Principles,' currently under review. It contains no participant data or submitted manuscript files.",
+  "creators": [
+    {"name": "Park, Yejin", "affiliation": "Graduate School of Information, Yonsei University"},
+    {"name": "Han, Eunbin", "affiliation": "Graduate School of Information, Yonsei University"},
+    {"name": "Sha, Jiwon", "affiliation": "Graduate School of Communication and Arts, Yonsei University"},
+    {"name": "Oh, Changhoon", "affiliation": "Graduate School of Information, Yonsei University"},
+    {"name": "Jun, Soojin", "affiliation": "Graduate School of Communication and Arts, Yonsei University"}
+  ],
+  "access_right": "open",
+  "license": "MIT",
+  "keywords": ["empathic AI", "chatbot", "multi-agent system", "emotional support", "diary study"],
+  "notes": "The associated manuscript is currently under review. Participant data are not included because the authors do not have permission to share them."
+}
