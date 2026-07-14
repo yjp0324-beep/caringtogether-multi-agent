@@ -23,7 +23,7 @@
 - [ ] GitHub 연동 화면에서 해당 리포지토리 활성화
 - [ ] GitHub에서 `v1.0.0` Release 생성
 - [ ] Zenodo 레코드의 제목, 저자 순서, ORCID, 초록, 키워드, 라이선스 확인
-- [x] 버전 DOI 발급: `10.5281/zenodo.21359273`
+- [x] 최신 버전 DOI 발급: `10.5281/zenodo.21359466` (`v1.1.0`)
 - [x] 저장소의 Data Availability Statement에 DOI 삽입
 
 ## 편집부에 사용할 핵심 설명

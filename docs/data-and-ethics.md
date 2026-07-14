@@ -21,7 +21,7 @@ The repository must not be interpreted as a public release of the human-particip
 
 ## Proposed Data Availability Statement
 
-> The source code, prompts, and system configuration used to implement the role-differentiated multi-agent system are publicly available through the version-specific Zenodo DOI listed in this repository. The authors do not have permission to share the participant data; therefore, conversational data, survey responses, interview materials, and other participant datasets are not publicly available and are not included in this repository.
+> The source code, prompts, and system configuration used to implement the role-differentiated multi-agent system are publicly available at https://doi.org/10.5281/zenodo.21359466. The authors do not have permission to share the participant data; therefore, conversational data, survey responses, interview materials, and other participant datasets are not publicly available and are not included in this repository.
 
 This wording follows the submitted manuscript's statement that the authors do not have permission to share data. Any later change must first be verified against the approved ethics protocol and participant consent form.
 
